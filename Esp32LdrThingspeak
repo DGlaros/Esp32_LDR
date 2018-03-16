@@ -10,17 +10,13 @@ const char* pass = "............";
 #define RED_PIN      5   
 #define LDR_PIN      2
 
-
-//String myReadAPIKey = "..........."; // Your READ API Key provied by thingspeak
-//String myWriteAPIKey = ".........."; // Your READ API Key provied by thingspeak
-//int myChannelNumber=;
-
-
 char host[] = "api.thingspeak.com";
-String ApiKey = "..........";  //String myWriteAPIKey = "............."; FOR UPDATING VALUES IN THINGSPEAK PORTAL
+
+//Insert the WriteAPIKey from Thingspeak cahannel settings FOR UPDATING VALUES IN THINGSPEAK PORTAL
+String ApiKey = "..........";  
 String path = "/update?key=" + ApiKey + "&field1=";
 
-int ldr_value = 0;
+int ldr_value = 0; // Initailise the Ldr sensor value
 
 void setup() {
 
