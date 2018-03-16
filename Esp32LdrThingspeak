@@ -1,0 +1,62 @@
+
+#include <WiFi.h>
+#include <WiFiClient.h>
+
+// Your WiFi credentials.
+// Set password to "" for open networks.
+const char* ssid = "...........";
+const char* pass = "............";
+
+#define RED_PIN      5   
+#define LDR_PIN      2
+
+
+//String myReadAPIKey = "..........."; // Your READ API Key provied by thingspeak
+//String myWriteAPIKey = ".........."; // Your READ API Key provied by thingspeak
+//int myChannelNumber=;
+
+
+char host[] = "api.thingspeak.com";
+String ApiKey = "..........";  //String myWriteAPIKey = "............."; FOR UPDATING VALUES IN THINGSPEAK PORTAL
+String path = "/update?key=" + ApiKey + "&field1=";
+
+int ldr_value = 0;
+
+void setup() {
+
+  Serial.begin(115200);
+  Serial.println("");
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, pass);
+  // Wait for connection
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.print("Connected to ");
+  Serial.println(ssid);
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  pinMode(LDR_PIN, INPUT);
+
+}
+
+void loop() {
+  ldr_value = analogRead(LDR_PIN); // read input value and store it
+  Serial.println(ldr_value);
+  WiFiClient client;
+  const int httpPort = 80;
+  if (!client.connect(host, httpPort)) {
+    Serial.println("connection failed");
+    return;
+  }
+  client.print(String("GET ") + path + ldr_value + " HTTP/1.1\r\n" +
+               "Host: " + host + "\r\n" +
+               "Connection: keep-alive\r\n\r\n");
+  delay(5000);
+}
